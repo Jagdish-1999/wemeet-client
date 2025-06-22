@@ -1,9 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* @custom-variant dark (&:where(.dark  .dark *)); */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --font-afacad: var(--font-afacad);
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --font-sans: var(--font-geist-sans);
@@ -41,6 +43,7 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
+    --chat-message: hsla(217, 91%, 80%);
 }
 
 :root {
@@ -110,6 +113,7 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+    --chat-message: hsla(217, 91%, 30%);
 }
 
 @layer base {
@@ -117,6 +121,96 @@
         @apply border-border outline-ring/50;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground h-screen;
+    }
+}
+
+@layer utilities {
+    .tw-ring-color {
+        box-shadow: color-mix(in oklab, var(--ring) 50%, transparent);
+    }
+
+    @layer chat-message-style {
+        .message {
+            position: relative;
+            border-radius: 5px;
+            padding: 0.3rem 0.5rem;
+
+            &::before {
+                content: "";
+                position: absolute;
+                right: -10px;
+                width: 10px;
+                height: 10px;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                right: -10px;
+                width: 10px;
+                height: 10px;
+                background-color: var(--background);
+            }
+        }
+
+        .sent-message {
+            background-color: var(--chat-message);
+            border-top-right-radius: 0px;
+
+            &::before {
+                top: 0px;
+                background-color: var(--chat-message);
+            }
+
+            &::after {
+                top: 0px;
+                border-top-left-radius: 75%;
+            }
+        }
+
+        .incoming-message {
+            border-top-left-radius: 0px;
+            background-color: var(--accent);
+
+            &::before {
+                left: -10px;
+                top: 0px;
+                background-color: var(--accent);
+            }
+
+            &::after {
+                top: 0px;
+                left: -10px;
+                border-top-right-radius: 75%;
+            }
+        }
+    }
+
+    @layer avatar-profile-indicator {
+        .online-indicator {
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                width: 10px;
+                height: 10px;
+                background-color: #56f485;
+                border-radius: 1000px;
+                border: 2px solid var(--background);
+            }
+        }
+    }
+
+    .scrollbar-hidden {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 }

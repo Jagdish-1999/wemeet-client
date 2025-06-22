@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Afacad } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -10,6 +12,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
     variable: "--font-geist-mono",
     subsets: ["latin"],
+});
+
+const afacad = Afacad({
+    variable: "--font-afacad",
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -23,11 +31,30 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} ${afacad.variable} antialiased`}
             >
-                {children}
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <Toaster
+                        className="max-w-sm flex justify-center justify-self-center"
+                        toastOptions={{
+                            duration: 3000,
+                            className:
+                                "font-afacad font-bold! sm:text-[calc(1rem-1px)]! mx-auto max-w-sm! w-fit! py-2! px-2.5!",
+                        }}
+                        expand
+                        richColors
+                        position="top-center"
+                        // visibleToasts={3}
+                    />
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );

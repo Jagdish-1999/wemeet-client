@@ -1,9 +1,73 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+
+import useEmitter from "@/hooks/use-emitter";
+import { EventNames } from "@/events/constants";
+import Navbar from "@/components/common/nav-bar";
+import { useIsMobile } from "@/hooks/use-mobile";
+import MobileView from "@/components/mobile-view";
+import DesktopView from "@/components/desktop-view";
+import { UserTypes } from "@/types/user-list.types";
+import useUser from "@/hooks/use-user";
+import Logger from "@/lib/log";
 
 export default function Home() {
+    const user = useUser(); //? Logging user first time
+    const emitter = useEmitter();
+    const isMobile = useIsMobile();
+    const [userList, setUserList] = useState<UserTypes[]>([]);
+    const [activeUser, setActiveUser] = useState<UserTypes | null>(null);
+    const [searchedUser, setSearchedUser] = useState<UserTypes[] | null>(null);
+
+    useEffect(() => {
+        if (!user) return;
+        emitter(EventNames.USERS_LIST, null, (data) => {
+            setUserList(data.data as UserTypes[]);
+            Logger.log(data);
+        });
+    }, [emitter, user]);
+
+    const setActiveUserHandler = useCallback((user: UserTypes) => {
+        setActiveUser(user);
+    }, []);
+
+    const setSearchUserHandler = useCallback(
+        (value: string) => {
+            const matchedUsers = userList.filter((user) =>
+                user.name.includes(value)
+            );
+            setSearchedUser(matchedUsers);
+        },
+        [userList]
+    );
+
     return (
-        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-            <Button>Button</Button>
+        <div className="flex flex-col h-full w-full">
+            <Navbar />
+            {userList.length > 0 && (
+                <>
+                    {isMobile ? (
+                        <MobileView
+                            activeUser={activeUser}
+                            setActiveUserHandler={setActiveUserHandler}
+                            setSearchUserHandler={setSearchUserHandler}
+                            userList={
+                                searchedUser != null ? searchedUser : userList
+                            }
+                        />
+                    ) : (
+                        <DesktopView
+                            activeUser={activeUser}
+                            setActiveUserHandler={setActiveUserHandler}
+                            setSearchUserHandler={setSearchUserHandler}
+                            userList={
+                                searchedUser != null ? searchedUser : userList
+                            }
+                        />
+                    )}
+                </>
+            )}
         </div>
     );
 }
