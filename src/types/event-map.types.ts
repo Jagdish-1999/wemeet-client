@@ -15,3 +15,11 @@ export interface AcknowledgeTypes {
     message: string;
     data: EventMap[keyof EventMap];
 }
+
+export interface EmitterType {
+    <K extends keyof EventMap>(
+        eventName: K,
+        data: unknown,
+        cb: (data: AcknowledgeTypes) => void
+    ): void;
+}

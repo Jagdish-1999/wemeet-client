@@ -3,7 +3,7 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
 } from "./ui/resizable";
-import ChatList from "./common/chat-list";
+import MessageList from "./common/message-list";
 import UserList from "./common/user-list";
 import { MobileViewPropTypes } from "./mobile-view";
 
@@ -26,6 +26,7 @@ const DesktopView: React.FC<DesktopViewPropTypes> = ({
                 <ResizablePanel defaultSize={25} minSize={15} maxSize={50}>
                     <UserList
                         userList={userList}
+                        activeUser={activeUser}
                         setActiveUserHandler={setActiveUserHandler}
                         setSearchUserHandler={setSearchUserHandler}
                     />
@@ -37,7 +38,7 @@ const DesktopView: React.FC<DesktopViewPropTypes> = ({
                             <div className="capitalize p-4 border-b">
                                 {activeUser?.name}
                             </div>
-                            <ChatList activeUser={activeUser} />
+                            <MessageList activeUser={activeUser} />
                         </>
                     )}
                 </ResizablePanel>

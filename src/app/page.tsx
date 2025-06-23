@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import useEmitter from "@/hooks/use-emitter";
 import { EventNames } from "@/events/constants";
 import Navbar from "@/components/common/nav-bar";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -10,7 +9,7 @@ import MobileView from "@/components/mobile-view";
 import DesktopView from "@/components/desktop-view";
 import { UserTypes } from "@/types/user-list.types";
 import useUser from "@/hooks/use-user";
-import Logger from "@/lib/log";
+import useEmitter from "@/hooks/use-emitter";
 
 export default function Home() {
     const user = useUser(); //? Logging user first time
@@ -24,7 +23,6 @@ export default function Home() {
         if (!user) return;
         emitter(EventNames.USERS_LIST, null, (data) => {
             setUserList(data.data as UserTypes[]);
-            Logger.log(data);
         });
     }, [emitter, user]);
 

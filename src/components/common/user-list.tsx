@@ -6,15 +6,18 @@ import { User2 } from "lucide-react";
 import { UserTypes } from "@/types/user-list.types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import SearchInput from "./search-input";
+import { cn } from "@/lib/utils";
 
 interface UserListPropTypes {
     userList: UserTypes[];
+    activeUser?: UserTypes | null;
     setActiveUserHandler: (user: UserTypes) => void;
     setSearchUserHandler: (value: string) => void;
 }
 
 const UserList: React.FC<UserListPropTypes> = ({
     userList,
+    activeUser,
     setActiveUserHandler,
     setSearchUserHandler,
 }) => {
@@ -26,7 +29,12 @@ const UserList: React.FC<UserListPropTypes> = ({
             {userList.map((user: UserTypes) => (
                 <div
                     key={user._id}
-                    className="flex gap-4 items-center p-2 border-b cursor-pointer"
+                    className={cn(
+                        `flex gap-4 items-center 
+                        p-2 border-b cursor-pointer
+                        transition-colors duration-150`,
+                        activeUser?._id === user._id && "sm:text-cyan-400"
+                    )}
                     onClick={() => {
                         setActiveUserHandler(user);
                     }}
@@ -51,7 +59,15 @@ const UserList: React.FC<UserListPropTypes> = ({
                                 Yesturday
                             </p>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div
+                            className="
+                                flex
+                                items-center
+                                justify-between
+                                opacity-90
+                                font-bold
+                                text-muted-foreground"
+                        >
                             {/* //! @TODO - need to implement current message in user list view */}
                             <p className="text-xs truncate w-3/4">
                                 Lorem ipsum, dolor sit amet consectetur

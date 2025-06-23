@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Toast from "@/lib/toast";
 import { decryptData, encryptData } from "@/lib/crypto";
 import { UserTypes } from "@/types/user-list.types";
+import { SocketWrapper } from "../lib/socket-wrapper";
 
 const useUser = () => {
     const [user, setUser] = useState<UserTypes | null>(null);
@@ -12,6 +13,7 @@ const useUser = () => {
     useEffect(() => {
         const usr = sessionStorage.getItem("user");
         const decrypted = decryptData(usr || "");
+        if (decrypted?._id) SocketWrapper.createInstance(decrypted._id);
         setUser(decrypted);
 
         if (decrypted) return;
@@ -35,6 +37,8 @@ const useUser = () => {
                     const result = await response.json();
 
                     if (result.error) Toast.error(result.message);
+
+                    SocketWrapper.createInstance(result.user._id);
 
                     const usr = encryptData(result.user);
                     sessionStorage.setItem("user", usr);

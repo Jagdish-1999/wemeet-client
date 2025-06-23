@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SocketWrapper } from "@/lib/socket-wrapper";
 
 interface MessageInputPropTypes {
     test?: string;
@@ -12,6 +13,15 @@ interface MessageInputPropTypes {
 
 const MessageInput: React.FC<MessageInputPropTypes> = () => {
     const isMobile = useIsMobile();
+    const emitter = SocketWrapper.getEmitter();
+
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+
+        emitter("test", null, () => {
+            console.log("Clicked", event);
+        });
+    };
 
     return (
         <form
@@ -24,6 +34,7 @@ const MessageInput: React.FC<MessageInputPropTypes> = () => {
                 py-3
                 bg-[var(--color-background)]
                 w-full"
+            onSubmit={handleSubmit}
         >
             {isMobile ? (
                 <Input
