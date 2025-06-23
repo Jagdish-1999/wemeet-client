@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import Toast from "@/lib/toast";
 import { decryptData, encryptData } from "@/lib/crypto";
-import { UserTypes } from "@/types/user-list.types";
+import { UserType } from "@/types/user-list.types";
 import { SocketWrapper } from "../lib/socket-wrapper";
 
 const useUser = () => {
-    const [user, setUser] = useState<UserTypes | null>(null);
+    const [user, setUser] = useState<UserType | null>(null);
 
     //? Handling user login
     useEffect(() => {
@@ -26,6 +26,7 @@ const useUser = () => {
             if (name) {
                 (async () => {
                     const response = await fetch(
+                        //! @TODO - need to replace this url with backend url!
                         "http://localhost:8080/get-user",
                         {
                             method: "POST",
@@ -51,7 +52,7 @@ const useUser = () => {
         } catch (error) {
             Toast.error(`Error in useLogin:  ${error}`);
         }
-    }, [setUser]);
+    }, []);
 
     return user;
 };

@@ -3,15 +3,15 @@
 import React from "react";
 import { User2 } from "lucide-react";
 
-import { UserTypes } from "@/types/user-list.types";
+import { UserType } from "@/types/user-list.types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import SearchInput from "./search-input";
 import { cn } from "@/lib/utils";
 
 interface UserListPropTypes {
-    userList: UserTypes[];
-    activeUser?: UserTypes | null;
-    setActiveUserHandler: (user: UserTypes) => void;
+    userList: UserType[];
+    activeUser?: UserType | null;
+    setActiveUserHandler: (user: UserType) => void;
     setSearchUserHandler: (value: string) => void;
 }
 
@@ -26,7 +26,7 @@ const UserList: React.FC<UserListPropTypes> = ({
             <div className="border-b p-2 py-4">
                 <SearchInput setSearchUserHandler={setSearchUserHandler} />
             </div>
-            {userList.map((user: UserTypes) => (
+            {userList.map((user: UserType) => (
                 <div
                     key={user._id}
                     className={cn(

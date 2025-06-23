@@ -1,10 +1,10 @@
 export interface UserListTypes {
     status: number;
     message: string;
-    data: UserTypes[];
+    data: UserType[];
 }
 
-export interface UserTypes {
+export interface UserType {
     _id: string;
     name: string;
     createdAt: string;

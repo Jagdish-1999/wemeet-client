@@ -1,12 +1,12 @@
 import { EventNames } from "@/events/constants";
-import { UserTypes } from "./user-list.types";
+import { UserType } from "./user-list.types";
 import { MessageTypes } from "./message.types";
 
 /**
  * @TODO - Add every events response type to EventMap
  */
 export default interface EventMap {
-    [EventNames.USERS_LIST]: UserTypes[];
+    [EventNames.USERS_LIST]: UserType[];
     [EventNames.MESSAGE_LIST]: MessageTypes[];
 }
 

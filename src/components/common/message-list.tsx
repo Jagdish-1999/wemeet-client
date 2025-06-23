@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import MessageInput from "./message-input";
 import Message from "./message";
 
-import { UserTypes } from "@/types/user-list.types";
+import { UserType } from "@/types/user-list.types";
 import { EventNames } from "@/events/constants";
 import { MessageTypes } from "@/types/message.types";
 import useEmitter from "@/hooks/use-emitter";
 
 interface ChatListPropTypes {
-    activeUser: UserTypes | null;
+    activeUser: UserType | null;
 }
 
 const MessageList: React.FC<ChatListPropTypes> = ({ activeUser }) => {

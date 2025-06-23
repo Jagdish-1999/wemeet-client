@@ -7,7 +7,7 @@ import Navbar from "@/components/common/nav-bar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import MobileView from "@/components/mobile-view";
 import DesktopView from "@/components/desktop-view";
-import { UserTypes } from "@/types/user-list.types";
+import { UserType } from "@/types/user-list.types";
 import useUser from "@/hooks/use-user";
 import useEmitter from "@/hooks/use-emitter";
 
@@ -15,18 +15,18 @@ export default function Home() {
     const user = useUser(); //? Logging user first time
     const emitter = useEmitter();
     const isMobile = useIsMobile();
-    const [userList, setUserList] = useState<UserTypes[]>([]);
-    const [activeUser, setActiveUser] = useState<UserTypes | null>(null);
-    const [searchedUser, setSearchedUser] = useState<UserTypes[] | null>(null);
+    const [userList, setUserList] = useState<UserType[]>([]);
+    const [activeUser, setActiveUser] = useState<UserType | null>(null);
+    const [searchedUser, setSearchedUser] = useState<UserType[] | null>(null);
 
     useEffect(() => {
         if (!user) return;
         emitter(EventNames.USERS_LIST, null, (data) => {
-            setUserList(data.data as UserTypes[]);
+            setUserList(data.data as UserType[]);
         });
     }, [emitter, user]);
 
-    const setActiveUserHandler = useCallback((user: UserTypes) => {
+    const setActiveUserHandler = useCallback((user: UserType) => {
         setActiveUser(user);
     }, []);
 
