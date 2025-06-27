@@ -3,31 +3,32 @@
 import { useEffect, useState } from "react";
 import Toast from "@/lib/toast";
 import { decryptData, encryptData } from "@/lib/crypto";
-import { UserType } from "@/types/user-list.types";
-import { SocketWrapper } from "../lib/socket-wrapper";
+import { User } from "@jagdish-1999/socket-contracts";
 
-const useUser = () => {
-    const [user, setUser] = useState<UserType | null>(null);
+const useUser = (): User | null => {
+    const [user, setUser] = useState<User | null>(null);
 
     //? Handling user login
     useEffect(() => {
         const usr = sessionStorage.getItem("user");
-        const decrypted = decryptData(usr || "");
-        if (decrypted?._id) SocketWrapper.createInstance(decrypted._id);
-        setUser(decrypted);
+        const decrypted = decryptData<User>(usr);
+        if (decrypted) {
+            console.log(
+                "%c[User] Logged in (cache)",
+                "color:green; font-weight:bold;",
+                decrypted
+            );
+            setUser(decrypted);
+        }
 
         if (decrypted) return;
         try {
-            let name;
-            if (!decrypted) {
-                name = prompt("Please Enter your name.");
-            }
+            const name = prompt("Please Enter your name.");
 
             if (name) {
                 (async () => {
                     const response = await fetch(
-                        //! @TODO - need to replace this url with backend url!
-                        "http://localhost:8080/get-user",
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/get-user`,
                         {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -39,11 +40,13 @@ const useUser = () => {
 
                     if (result.error) Toast.error(result.message);
 
-                    SocketWrapper.createInstance(result.user._id);
-
-                    const usr = encryptData(result.user);
+                    const usr = encryptData<User>(result.user);
                     sessionStorage.setItem("user", usr);
-                    console.log("usr", usr);
+                    console.log(
+                        "%c[User Logged in]",
+                        "color:green; font-weight:bold;",
+                        user
+                    );
                     setUser(result.user);
                 })();
             } else {

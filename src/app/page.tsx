@@ -1,32 +1,34 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { User } from "@jagdish-1999/socket-contracts";
 
-import { EventNames } from "@/events/constants";
 import Navbar from "@/components/common/nav-bar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import MobileView from "@/components/mobile-view";
 import DesktopView from "@/components/desktop-view";
-import { UserType } from "@/types/user-list.types";
-import useUser from "@/hooks/use-user";
-import useEmitter from "@/hooks/use-emitter";
+import useSocket from "@/hooks/use-socket";
 
 export default function Home() {
-    const user = useUser(); //? Logging user first time
-    const emitter = useEmitter();
     const isMobile = useIsMobile();
-    const [userList, setUserList] = useState<UserType[]>([]);
-    const [activeUser, setActiveUser] = useState<UserType | null>(null);
-    const [searchedUser, setSearchedUser] = useState<UserType[] | null>(null);
+    const { socket, isConnected } = useSocket();
+    const [userList, setUserList] = useState<User[]>([]);
+    const [activeUser, setActiveUser] = useState<User | null>(null);
+    const [searchedUser, setSearchedUser] = useState<User[] | null>(null);
 
     useEffect(() => {
-        if (!user) return;
-        emitter(EventNames.USERS_LIST, null, (data) => {
-            setUserList(data.data as UserType[]);
-        });
-    }, [emitter, user]);
+        if (socket && isConnected) {
+            socket.emit(
+                "user:list",
+                { token: "", id: socket.user ? socket.user._id : "" },
+                (data) => {
+                    setUserList(data.data);
+                }
+            );
+        }
+    }, [socket, isConnected]);
 
-    const setActiveUserHandler = useCallback((user: UserType) => {
+    const setActiveUserHandler = useCallback((user: User) => {
         setActiveUser(user);
     }, []);
 

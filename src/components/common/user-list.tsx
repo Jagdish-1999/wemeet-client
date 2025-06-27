@@ -3,15 +3,15 @@
 import React from "react";
 import { User2 } from "lucide-react";
 
-import { UserType } from "@/types/user-list.types";
+import { User } from "@jagdish-1999/socket-contracts";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import SearchInput from "./search-input";
 import { cn } from "@/lib/utils";
 
 interface UserListPropTypes {
-    userList: UserType[];
-    activeUser?: UserType | null;
-    setActiveUserHandler: (user: UserType) => void;
+    userList: User[];
+    activeUser?: User | null;
+    setActiveUserHandler: (user: User) => void;
     setSearchUserHandler: (value: string) => void;
 }
 
@@ -26,7 +26,7 @@ const UserList: React.FC<UserListPropTypes> = ({
             <div className="border-b p-2 py-4">
                 <SearchInput setSearchUserHandler={setSearchUserHandler} />
             </div>
-            {userList.map((user: UserType) => (
+            {userList.map((user) => (
                 <div
                     key={user._id}
                     className={cn(
@@ -41,9 +41,9 @@ const UserList: React.FC<UserListPropTypes> = ({
                 >
                     <Avatar className="w-10 h-10">
                         <AvatarImage
-                            // src={"https://github.com/shadcn.png"}
+                            src={"https://github.com/shadcn.png"}
                             //! @TODO - need to implement user avatar image
-                            src={`https://avatar.iran.liara.run/public/boy?username=${user.name}`}
+                            // src={`https://avatar.iran.liara.run/public/boy?username=${user.name}`}
                         />
                         <AvatarFallback>
                             <User2 className="p-1" />

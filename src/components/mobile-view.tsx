@@ -1,13 +1,13 @@
 "use client";
 
-import { UserType } from "@/types/user-list.types";
-import MessageList from "./common/message-list";
+import { User } from "@jagdish-1999/socket-contracts";
+import MessageList from "./common/chat-list";
 import UserList from "./common/user-list";
 
 export interface MobileViewPropTypes {
-    userList: UserType[];
-    activeUser: UserType | null;
-    setActiveUserHandler: (user: UserType) => void;
+    userList: User[];
+    activeUser: User | null;
+    setActiveUserHandler: (user: User) => void;
     setSearchUserHandler: (value: string) => void;
 }
 

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Afacad } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import SocketProvider from "@/providers/socket-provider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -35,26 +36,28 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} ${afacad.variable} antialiased`}
             >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    <Toaster
-                        className="max-w-sm flex justify-center justify-self-center"
-                        toastOptions={{
-                            duration: 3000,
-                            className:
-                                "font-afacad font-bold! sm:text-[calc(1rem-1px)]! mx-auto max-w-sm! w-fit! py-2! px-2.5!",
-                        }}
-                        expand
-                        richColors
-                        position="top-center"
-                        // visibleToasts={3}
-                    />
-                    {children}
-                </ThemeProvider>
+                <SocketProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <Toaster
+                            className="max-w-sm flex justify-center justify-self-center"
+                            toastOptions={{
+                                duration: 3000,
+                                className:
+                                    "font-afacad font-bold! sm:text-[calc(1rem-1px)]! mx-auto max-w-sm! w-fit! py-2! px-2.5!",
+                            }}
+                            expand
+                            richColors
+                            position="top-center"
+                            // visibleToasts={3}
+                        />
+                        {children}
+                    </ThemeProvider>
+                </SocketProvider>
             </body>
         </html>
     );

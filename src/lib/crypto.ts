@@ -4,7 +4,7 @@ import Toast from "./toast";
 export const secretKey = "your-strong-secret-key"; // 🔐 choose a strong key
 
 // Encrypt
-function encryptData(data: unknown) {
+function encryptData<T>(data: T): string {
     const ciphertext = CryptoJS.AES.encrypt(
         JSON.stringify(data),
         secretKey
@@ -13,7 +13,7 @@ function encryptData(data: unknown) {
 }
 
 // Decrypt
-function decryptData(ciphertext: string) {
+function decryptData<T>(ciphertext: string | null | undefined): T | null {
     if (!ciphertext) return null;
     try {
         const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);

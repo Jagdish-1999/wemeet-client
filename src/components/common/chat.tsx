@@ -2,17 +2,14 @@
 
 import React, { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { MessageTypes } from "@/types/message.types";
+import { ChatFromServer } from "@jagdish-1999/socket-contracts";
 
-interface MessagePropTypes {
-    message: MessageTypes;
+interface ChatPropTypes {
+    chat: ChatFromServer;
     isCurrentUser: boolean;
 }
 
-const Message: React.FC<MessagePropTypes> = ({
-    message,
-    isCurrentUser = false,
-}) => {
+const Chat: React.FC<ChatPropTypes> = ({ chat, isCurrentUser = false }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const getTime = useCallback((dt: Date) => {
@@ -31,7 +28,7 @@ const Message: React.FC<MessagePropTypes> = ({
 
     return (
         <>
-            {message && (
+            {chat && (
                 <div
                     ref={scrollRef}
                     className={cn(
@@ -51,15 +48,15 @@ const Message: React.FC<MessagePropTypes> = ({
                             `
                             flex
                             gap-2
-                            message
                             max-w-[60%]
                             font-afacad
                             font-[300]
+                            chat
                             `,
-                            !isCurrentUser ? "incoming-message" : "sent-message"
+                            !isCurrentUser ? "received-chat" : "sended-chat"
                         )}
                     >
-                        {message.message}
+                        {chat.message}
                         <span
                             className={`
                                 self-end
@@ -72,7 +69,7 @@ const Message: React.FC<MessagePropTypes> = ({
                                 ${isCurrentUser ? "pr-1" : "pl-1"}
                                 `}
                         >
-                            {getTime(message.timestamp)}
+                            {getTime(chat.createdAt)}
                             {/* Yesturday */}
                         </span>
                     </p>
@@ -82,4 +79,4 @@ const Message: React.FC<MessagePropTypes> = ({
     );
 };
 
-export default Message;
+export default Chat;

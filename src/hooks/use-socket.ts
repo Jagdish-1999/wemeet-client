@@ -1,39 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { io, Socket } from "socket.io-client";
+import { useContext } from "react";
+import { SocketContext } from "@/providers/socket-provider";
 
-let instance: Socket | null = null;
+const useSocket = () => {
+    const context = useContext(SocketContext);
+    if (!context)
+        throw new Error("useSocket must be used inside <SocketProvider>");
 
-/**
- * Singleton wrapper for Socket.IO client to ensure a single instance is used throughout the application.
- * This prevents multiple connections to the server and maintains a consistent socket state.
- * Usage:
- * const socket = useSocket();
- * This hook will return the singleton instance of the socket.
- * The socket will automatically connect to the server at "http://localhost:8080".
- */
-
-class SocketWrapper {
-    socket: Socket | null = null;
-    constructor() {
-        this.socket = io("http://localhost:8080");
-    }
-
-    static getInstance(): Socket {
-        if (!instance) {
-            instance = new SocketWrapper().socket;
-        }
-        return instance!;
-    }
-}
-
-/**
- *
- * @returns Socket.Io client instance.(Singleton instance)
- */
-export const useSocket = () => {
-    const [socket] = useState(() => SocketWrapper.getInstance());
-
-    return socket;
+    return context;
 };
+
+export default useSocket;

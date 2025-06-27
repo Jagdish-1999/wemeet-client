@@ -43,7 +43,7 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
-    --chat-message: hsla(217, 91%, 80%);
+    --color-sended-chat: hsla(217, 91%, 80%);
 }
 
 :root {
@@ -113,7 +113,7 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
-    --chat-message: hsla(217, 91%, 30%);
+    --color-sended-chat: hsla(217, 91%, 30%);
 }
 
 @layer base {
@@ -130,8 +130,8 @@
         box-shadow: color-mix(in oklab, var(--ring) 50%, transparent);
     }
 
-    @layer chat-message-style {
-        .message {
+    @layer chat-style {
+        .chat {
             position: relative;
             border-radius: 5px;
             padding: 0.3rem 0.5rem;
@@ -154,13 +154,13 @@
             }
         }
 
-        .sent-message {
-            background-color: var(--chat-message);
+        .sended-chat {
+            background-color: var(--color-sended-chat);
             border-top-right-radius: 0px;
 
             &::before {
                 top: 0px;
-                background-color: var(--chat-message);
+                background-color: var(--color-sended-chat);
             }
 
             &::after {
@@ -169,7 +169,7 @@
             }
         }
 
-        .incoming-message {
+        .received-chat {
             border-top-left-radius: 0px;
             background-color: var(--accent);
 

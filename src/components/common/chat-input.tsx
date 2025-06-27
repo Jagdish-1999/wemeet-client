@@ -5,22 +5,22 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { SocketWrapper } from "@/lib/socket-wrapper";
+// import useSocket from "@/hooks/use-socket";
 
-interface MessageInputPropTypes {
+interface ChatInputPropTypes {
     test?: string;
 }
 
-const MessageInput: React.FC<MessageInputPropTypes> = () => {
+const MessageInput: React.FC<ChatInputPropTypes> = () => {
+    // const socket = useSocket();
     const isMobile = useIsMobile();
-    const emitter = SocketWrapper.getEmitter();
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        emitter("test", null, () => {
-            console.log("Clicked", event);
-        });
+        // socket?.emit("test", null, () => {
+        //     console.log("Clicked", event);
+        // });
     };
 
     return (
