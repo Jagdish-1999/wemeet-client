@@ -28,10 +28,12 @@ const useUser = (): User | null => {
             if (name) {
                 (async () => {
                     const response = await fetch(
-                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/get-user`,
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/login-user`,
                         {
                             method: "POST",
-                            headers: { "Content-Type": "application/json" },
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
                             body: JSON.stringify({ name }),
                         }
                     );
@@ -45,7 +47,7 @@ const useUser = (): User | null => {
                     console.log(
                         "%c[User Logged in]",
                         "color:green; font-weight:bold;",
-                        user
+                        result.user
                     );
                     setUser(result.user);
                 })();

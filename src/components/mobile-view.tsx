@@ -1,7 +1,7 @@
 "use client";
 
 import { User } from "@jagdish-1999/socket-contracts";
-import MessageList from "./common/chat-list";
+import ChatList from "./common/chat-list";
 import UserList from "./common/user-list";
 
 export interface MobileViewPropTypes {
@@ -20,7 +20,7 @@ const MobileView: React.FC<MobileViewPropTypes> = ({
     return (
         <div className="w-full flex flex-1 h-full overflow-hidden">
             {activeUser ? (
-                <MessageList activeUser={activeUser} />
+                <ChatList activeUser={activeUser} />
             ) : (
                 <div className="flex-1 w-full h-full overflow-hidden">
                     <UserList

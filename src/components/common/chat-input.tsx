@@ -5,23 +5,47 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
-// import useSocket from "@/hooks/use-socket";
+import useSocket from "@/hooks/use-socket";
+import { SetStateAction, useCallback, useState } from "react";
+import { Chat, User } from "@jagdish-1999/socket-contracts";
 
 interface ChatInputPropTypes {
-    test?: string;
+    activeUser: User | null;
+    setChatList: React.Dispatch<SetStateAction<Chat[]>>;
 }
 
-const MessageInput: React.FC<ChatInputPropTypes> = () => {
-    // const socket = useSocket();
+const ChatInput: React.FC<ChatInputPropTypes> = ({
+    activeUser,
+    setChatList,
+}) => {
+    const { socket } = useSocket();
     const isMobile = useIsMobile();
+    const [value, setValue] = useState("");
 
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
+    const handleSubmit = useCallback(
+        (event: React.FormEvent) => {
+            event.preventDefault();
 
-        // socket?.emit("test", null, () => {
-        //     console.log("Clicked", event);
-        // });
-    };
+            socket?.emit(
+                "chat:new",
+                {
+                    senderId: socket.user ? socket.user._id : "",
+                    receiverId: activeUser ? activeUser._id : "",
+                    message: value,
+                },
+                ({ data }) => {
+                    if (data) {
+                        setChatList((prev) => [...prev, data]);
+                        setValue("");
+                    }
+                    console.log("Chat new", data);
+                }
+            );
+            socket?.off();
+        },
+
+        [activeUser, setChatList, socket, value]
+    );
 
     return (
         <form
@@ -51,6 +75,7 @@ const MessageInput: React.FC<ChatInputPropTypes> = () => {
                     py-3
                     sm:rounded-sm
                     sm:p-4"
+                    onChange={(evt) => setValue(evt.target.value)}
                 />
             ) : (
                 <Textarea
@@ -72,6 +97,7 @@ const MessageInput: React.FC<ChatInputPropTypes> = () => {
                         max-h-12
                         border
                         align-top"
+                    onChange={(evt) => setValue(evt.target.value)}
                 />
             )}
             <Button
@@ -96,4 +122,4 @@ const MessageInput: React.FC<ChatInputPropTypes> = () => {
     );
 };
 
-export default MessageInput;
+export default ChatInput;

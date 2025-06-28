@@ -16,12 +16,11 @@ export const attachSocketDebugLogger = (socket: Socket) => {
     };
 
     // Optional: log all incoming events too (if needed)
-    socket.onAny((event: string, ...args: unknown[]) => {
+    socket.onAny((event: string) => {
         console.log(
             `%c[Socket Receive] %c${event}`,
-            "color: blue; font-weight: bold",
-            "color: purple;",
-            ...args
+            "color: green; font-weight: bold",
+            "color: purple;"
         );
     });
 };

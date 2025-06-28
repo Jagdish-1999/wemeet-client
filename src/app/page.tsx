@@ -22,10 +22,14 @@ export default function Home() {
                 "user:list",
                 { token: "", id: socket.user ? socket.user._id : "" },
                 (data) => {
-                    setUserList(data.data);
+                    setUserList(data.data || []);
                 }
             );
         }
+
+        return () => {
+            socket?.off();
+        };
     }, [socket, isConnected]);
 
     const setActiveUserHandler = useCallback((user: User) => {
