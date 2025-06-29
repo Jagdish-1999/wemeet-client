@@ -27,21 +27,20 @@ const ChatInput: React.FC<ChatInputPropTypes> = ({
             event.preventDefault();
 
             socket?.emit(
-                "chat:new",
+                "chat:send",
                 {
                     senderId: socket.user ? socket.user._id : "",
                     receiverId: activeUser ? activeUser._id : "",
                     message: value,
                 },
-                ({ data }) => {
-                    if (data) {
-                        setChatList((prev) => [...prev, data]);
+                (data) => {
+                    if (data.data) {
+                        setChatList((prev) => [...prev, data.data]);
                         setValue("");
                     }
                     console.log("Chat new", data);
                 }
             );
-            socket?.off();
         },
 
         [activeUser, setChatList, socket, value]
@@ -75,6 +74,7 @@ const ChatInput: React.FC<ChatInputPropTypes> = ({
                     py-3
                     sm:rounded-sm
                     sm:p-4"
+                    value={value}
                     onChange={(evt) => setValue(evt.target.value)}
                 />
             ) : (
@@ -97,6 +97,7 @@ const ChatInput: React.FC<ChatInputPropTypes> = ({
                         max-h-12
                         border
                         align-top"
+                    value={value}
                     onChange={(evt) => setValue(evt.target.value)}
                 />
             )}

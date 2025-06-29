@@ -36,10 +36,10 @@ const ChatList: React.FC<ChatListPropTypes> = ({ activeUser }) => {
     }, [socket, activeUser?._id]);
 
     useEffect(() => {
-        socket?.on("chat:receive", (cht, cb) => {
-            setChatList((prev) => [...prev, cht]);
-            console.log("Chat received", cht);
-            cb("true" as any);
+        socket?.on("chat:receive", (data, cb) => {
+            console.log("Chat received", data);
+            if (data && data.data) setChatList((prev) => [...prev, data.data]);
+            if (cb) cb(true);
         });
 
         return () => {
