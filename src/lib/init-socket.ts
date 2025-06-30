@@ -1,12 +1,15 @@
 import { TypedSocket } from "@/events/constants";
-import { User } from "@jagdish-1999/socket-contracts";
-import { io, Socket } from "socket.io-client";
+import { ClientToServerEventMap, User } from "@jagdish-1999/socket-contracts";
+import { io } from "socket.io-client";
 
 // Full monkey patch version — logs ALL emitted events automatically
-export const attachSocketDebugLogger = (socket: Socket) => {
+export const attachSocketDebugLogger = (socket: TypedSocket) => {
     const originalEmit = socket.emit;
 
-    socket.emit = function (event: string, ...args: unknown[]) {
+    socket.emit = function (
+        event: keyof ClientToServerEventMap,
+        ...args: Parameters<ClientToServerEventMap[typeof event]>
+    ) {
         console.log(
             `%c[Socket Emit] %c${event}`,
             "color: green; font-weight: bold",
@@ -16,17 +19,26 @@ export const attachSocketDebugLogger = (socket: Socket) => {
     };
 
     // Optional: log all incoming events too (if needed)
-    socket.onAny((event: string) => {
+    socket.onAny((event: keyof ClientToServerEventMap) => {
         console.log(
             `%c[Socket Receive] %c${event}`,
             "color: green; font-weight: bold",
-            "color: purple;"
+            "color: #4169E1;"
         );
     });
 };
+
 let socketInstance: TypedSocket | null = null; //? Singleton socket instance
 
 export const initSocket = (user: User | null): TypedSocket | null => {
+    if (socketInstance) {
+        socketInstance.on("connect_error", (err) => {
+            console.error("%c[Socket Error]", "color:red;", err);
+        });
+
+        return socketInstance;
+    }
+
     if (!socketInstance && user) {
         socketInstance = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
             query: { userId: user?._id },
@@ -39,11 +51,6 @@ export const initSocket = (user: User | null): TypedSocket | null => {
             attachSocketDebugLogger(socketInstance);
         if (socketInstance) socketInstance.user = user;
     }
-
-    if (socketInstance)
-        socketInstance.on("connect_error", (err) => {
-            console.error("%c[Socket Error]", "color:red;", err);
-        });
 
     return socketInstance;
 };

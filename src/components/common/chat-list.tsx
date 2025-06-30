@@ -18,14 +18,13 @@ const ChatList: React.FC<ChatListPropTypes> = ({ activeUser }) => {
     useEffect(() => {
         if (activeUser?._id) {
             socket?.emit(
-                "chat:list",
+                "chatList",
                 {
                     senderId: socket.user ? socket.user._id : "",
                     receiverId: activeUser?._id ? activeUser._id : "",
                 },
                 (data) => {
-                    console.log(data);
-                    setChatList(data.data || []);
+                    setChatList(data.data);
                 }
             );
         }
@@ -36,9 +35,9 @@ const ChatList: React.FC<ChatListPropTypes> = ({ activeUser }) => {
     }, [socket, activeUser?._id]);
 
     useEffect(() => {
-        socket?.on("chat:receive", (data, cb) => {
+        socket?.on("chatReceived", (data, cb) => {
             console.log("Chat received", data);
-            if (data && data.data) setChatList((prev) => [...prev, data.data]);
+            setChatList((prev) => (data.data ? [...prev, data.data] : prev));
             if (cb) cb(true);
         });
 

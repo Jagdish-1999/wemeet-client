@@ -27,17 +27,17 @@ const ChatInput: React.FC<ChatInputPropTypes> = ({
             event.preventDefault();
 
             socket?.emit(
-                "chat:send",
+                "sendChat",
                 {
                     senderId: socket.user ? socket.user._id : "",
                     receiverId: activeUser ? activeUser._id : "",
                     message: value,
                 },
                 (data) => {
-                    if (data.data) {
-                        setChatList((prev) => [...prev, data.data]);
-                        setValue("");
-                    }
+                    setChatList((prev) =>
+                        data.data ? [...prev, data.data] : prev
+                    );
+                    setValue("");
                     console.log("Chat new", data);
                 }
             );

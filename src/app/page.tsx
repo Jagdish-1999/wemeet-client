@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Toast from "@/lib/toast";
 import { User } from "@jagdish-1999/socket-contracts";
 
 import Navbar from "@/components/common/nav-bar";
@@ -19,10 +20,11 @@ export default function Home() {
     useEffect(() => {
         if (socket && isConnected) {
             socket.emit(
-                "user:list",
+                "userList",
                 { token: "", id: socket.user ? socket.user._id : "" },
                 (data) => {
-                    setUserList(data.data || []);
+                    Toast.success(data.message);
+                    setUserList(data.data);
                 }
             );
         }
