@@ -16,7 +16,7 @@ const useUser = (): User | null => {
             console.log(
                 "%c[User] Logged in (cache)",
                 "color:green; font-weight:bold;",
-                decrypted
+                decrypted.name
             );
             setUser(decrypted);
         }
@@ -47,7 +47,7 @@ const useUser = (): User | null => {
                     console.log(
                         "%c[User Logged in]",
                         "color:green; font-weight:bold;",
-                        result.user
+                        result.user.name
                     );
                     setUser(result.user);
                 })();

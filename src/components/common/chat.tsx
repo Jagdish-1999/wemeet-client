@@ -3,6 +3,9 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Chat as ChatFromServer } from "@jagdish-1999/socket-contracts";
+import ToolTip from "./tool-tip";
+import { Pencil, Trash2 } from "lucide-react";
+import { Separator } from "../ui/separator";
 
 interface ChatPropTypes {
     chat: ChatFromServer;
@@ -43,36 +46,59 @@ const Chat: React.FC<ChatPropTypes> = ({ chat, isCurrentUser = false }) => {
                         !isCurrentUser && "items-start"
                     )}
                 >
-                    <p
-                        className={cn(
-                            `
-                            flex
-                            gap-2
-                            max-w-[60%]
-                            font-afacad
-                            font-[300]
-                            chat
-                            `,
-                            !isCurrentUser ? "received-chat" : "sended-chat"
-                        )}
+                    <ToolTip
+                        hideArrow={true}
+                        isHoverable={false}
+                        trigger={
+                            <p
+                                className={cn(
+                                    `
+                                    flex
+                                    gap-2
+                                    max-w-[60%]
+                                    font-afacad
+                                    font-[300]
+                                    chat
+                                    `,
+                                    !isCurrentUser
+                                        ? "received-chat"
+                                        : "sended-chat"
+                                )}
+                            >
+                                {chat.message}
+                                <span
+                                    className={`
+                                        self-end
+                                        justify-end
+                                        font-[Afacad]
+                                        text-[10px]
+                                        text-muted-foreground
+                                        font-semibold
+                                        text-end
+                                        ${isCurrentUser ? "pr-1" : "pl-1"}
+                                        `}
+                                >
+                                    {getTime(chat.createdAt)}
+                                    {/* Yesturday */}
+                                </span>
+                            </p>
+                        }
                     >
-                        {chat.message}
-                        <span
-                            className={`
-                                self-end
-                                justify-end
-                                font-[Afacad]
-                                text-[10px]
-                                text-muted-foreground
-                                font-semibold
-                                text-end
-                                ${isCurrentUser ? "pr-1" : "pl-1"}
-                                `}
-                        >
-                            {getTime(chat.createdAt)}
-                            {/* Yesturday */}
-                        </span>
-                    </p>
+                        <div className="flex h-4 w-full gap-2">
+                            <p className="flex items-center gap-1 cursor-pointer">
+                                <Pencil size={15} />
+                                <span>Edit</span>
+                            </p>
+                            <Separator
+                                orientation="vertical"
+                                // className="bg-tooltip-foreground h-auto"
+                            />
+                            <p className="flex items-center gap-1 cursor-pointer">
+                                <Trash2 size={15} />
+                                <span>Delete</span>
+                            </p>
+                        </div>
+                    </ToolTip>
                 </div>
             )}
         </>
