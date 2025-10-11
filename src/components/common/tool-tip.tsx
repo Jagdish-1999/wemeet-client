@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface ToolTipPropTypes {
@@ -5,6 +6,7 @@ interface ToolTipPropTypes {
     children: React.ReactNode;
     isHoverable?: boolean;
     hideArrow?: boolean;
+    className?: string;
 }
 
 const ToolTip: React.FC<ToolTipPropTypes> = ({
@@ -12,11 +14,15 @@ const ToolTip: React.FC<ToolTipPropTypes> = ({
     children,
     isHoverable = true,
     hideArrow = false,
+    className = "",
 }) => {
     return (
         <Tooltip disableHoverableContent={isHoverable}>
             <TooltipTrigger asChild>{trigger}</TooltipTrigger>
-            <TooltipContent className="p-2 rounded-none" hideArrow={hideArrow}>
+            <TooltipContent
+                className={cn("p-2 rounded-none", className)}
+                hideArrow={hideArrow}
+            >
                 {children}
             </TooltipContent>
         </Tooltip>

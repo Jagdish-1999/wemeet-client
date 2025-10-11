@@ -4,17 +4,20 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Chat as ChatFromServer } from "@jagdish-1999/socket-contracts";
 import ToolTip from "./tool-tip";
-import { Pencil, Trash2 } from "lucide-react";
-import { Separator } from "../ui/separator";
+import MessageHoverOptions from "./message-hover-options";
 
 interface ChatPropTypes {
     chat: ChatFromServer;
     isCurrentUser: boolean;
+    setInputMessageValue: (val: string) => void;
 }
 
-const Chat: React.FC<ChatPropTypes> = ({ chat, isCurrentUser = false }) => {
+const Chat: React.FC<ChatPropTypes> = ({
+    chat,
+    isCurrentUser = false,
+    setInputMessageValue,
+}) => {
     const scrollRef = useRef<HTMLDivElement>(null);
-
     const getTime = useCallback((dt: Date) => {
         const date = new Date(dt);
         const hour = date.getHours();
@@ -47,6 +50,7 @@ const Chat: React.FC<ChatPropTypes> = ({ chat, isCurrentUser = false }) => {
                     )}
                 >
                     <ToolTip
+                        className="rounded-[2px]"
                         hideArrow={true}
                         isHoverable={false}
                         trigger={
@@ -58,6 +62,7 @@ const Chat: React.FC<ChatPropTypes> = ({ chat, isCurrentUser = false }) => {
                                     max-w-[60%]
                                     font-afacad
                                     font-[300]
+                                    leading-4
                                     chat
                                     `,
                                     !isCurrentUser
@@ -65,7 +70,10 @@ const Chat: React.FC<ChatPropTypes> = ({ chat, isCurrentUser = false }) => {
                                         : "sended-chat"
                                 )}
                             >
-                                {chat.message}
+                                {chat?.deletedFrom?.includes?.("SENDER") &&
+                                !isCurrentUser
+                                    ? "This message was deleted."
+                                    : chat.message}
                                 <span
                                     className={`
                                         self-end
@@ -79,25 +87,15 @@ const Chat: React.FC<ChatPropTypes> = ({ chat, isCurrentUser = false }) => {
                                         `}
                                 >
                                     {getTime(chat.createdAt)}
-                                    {/* Yesturday */}
                                 </span>
                             </p>
                         }
                     >
-                        <div className="flex h-4 w-full gap-2">
-                            <p className="flex items-center gap-1 cursor-pointer">
-                                <Pencil size={15} />
-                                <span>Edit</span>
-                            </p>
-                            <Separator
-                                orientation="vertical"
-                                // className="bg-tooltip-foreground h-auto"
-                            />
-                            <p className="flex items-center gap-1 cursor-pointer">
-                                <Trash2 size={15} />
-                                <span>Delete</span>
-                            </p>
-                        </div>
+                        <MessageHoverOptions
+                            isCurrentUser={isCurrentUser}
+                            chat={chat}
+                            setInputMessageValue={setInputMessageValue}
+                        />
                     </ToolTip>
                 </div>
             )}

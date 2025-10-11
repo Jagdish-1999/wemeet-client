@@ -28,7 +28,7 @@ const useUser = (): User | null => {
             if (name) {
                 (async () => {
                     const response = await fetch(
-                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/login-user`,
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/login`,
                         {
                             method: "POST",
                             headers: {

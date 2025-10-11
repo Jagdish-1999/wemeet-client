@@ -6,21 +6,24 @@ import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import useSocket from "@/hooks/use-socket";
-import { SetStateAction, useCallback, useState } from "react";
+import { KeyboardEvent, SetStateAction, useCallback } from "react";
 import { Chat, User } from "@jagdish-1999/socket-contracts";
 
 interface ChatInputPropTypes {
     activeUser: User | null;
     setChatList: React.Dispatch<SetStateAction<Chat[]>>;
+    inputMessage: string;
+    setInputMessageValue: (val: string) => void;
 }
 
 const ChatInput: React.FC<ChatInputPropTypes> = ({
     activeUser,
     setChatList,
+    inputMessage,
+    setInputMessageValue,
 }) => {
     const { socket } = useSocket();
     const isMobile = useIsMobile();
-    const [value, setValue] = useState("");
 
     const handleSubmit = useCallback(
         (event: React.FormEvent) => {
@@ -31,19 +34,19 @@ const ChatInput: React.FC<ChatInputPropTypes> = ({
                 {
                     senderId: socket.user ? socket.user._id : "",
                     receiverId: activeUser ? activeUser._id : "",
-                    message: value,
+                    message: inputMessage,
                 },
                 (data) => {
                     setChatList((prev) =>
                         data.data ? [...prev, data.data] : prev
                     );
-                    setValue("");
-                    console.log("Chat new", data);
+                    setInputMessageValue("");
+                    console.log("Chat send", data);
                 }
             );
         },
 
-        [activeUser, setChatList, socket, value]
+        [activeUser, setChatList, socket, inputMessage, setInputMessageValue]
     );
 
     return (
@@ -74,8 +77,12 @@ const ChatInput: React.FC<ChatInputPropTypes> = ({
                     py-3
                     sm:rounded-sm
                     sm:p-4"
-                    value={value}
-                    onChange={(evt) => setValue(evt.target.value)}
+                    value={inputMessage}
+                    onChange={(evt) => setInputMessageValue(evt.target.value)}
+                    onKeyDown={(evt: KeyboardEvent<HTMLInputElement>) => {
+                        if (evt.key === "Enter" && !evt.shiftKey)
+                            handleSubmit(evt);
+                    }}
                 />
             ) : (
                 <Textarea
@@ -97,8 +104,12 @@ const ChatInput: React.FC<ChatInputPropTypes> = ({
                         max-h-12
                         border
                         align-top"
-                    value={value}
-                    onChange={(evt) => setValue(evt.target.value)}
+                    value={inputMessage}
+                    onChange={(evt) => setInputMessageValue(evt.target.value)}
+                    onKeyDown={(evt: KeyboardEvent<HTMLTextAreaElement>) => {
+                        if (evt.key === "Enter" && !evt.shiftKey)
+                            handleSubmit(evt);
+                    }}
                 />
             )}
             <Button
