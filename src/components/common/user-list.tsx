@@ -3,7 +3,7 @@
 import React from "react";
 import { User2 } from "lucide-react";
 
-import { User } from "@jagdish-1999/socket-contracts";
+import { User } from "@jagdish-1999/wemeet-socket-contracts";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import SearchInput from "./search-input";
 import { cn } from "@/lib/utils";

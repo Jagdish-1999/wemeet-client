@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { Chat as ChatFromServer } from "@jagdish-1999/socket-contracts";
+import { Chat as ChatFromServer } from "@jagdish-1999/wemeet-socket-contracts";
 import ToolTip from "./tool-tip";
 import MessageHoverOptions from "./message-hover-options";
 

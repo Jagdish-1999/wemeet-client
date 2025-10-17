@@ -4,7 +4,7 @@ import Toast from "@/lib/toast";
 import { Fragment } from "react";
 import useSocket from "@/hooks/use-socket";
 import { TypedSocket } from "@/events/constants";
-import { Chat } from "@jagdish-1999/socket-contracts";
+import { Chat } from "@jagdish-1999/wemeet-socket-contracts";
 
 interface MessageHoverOptionsType {
     isCurrentUser: boolean;

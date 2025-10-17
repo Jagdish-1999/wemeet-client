@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@jagdish-1999/socket-contracts";
+import { User } from "@jagdish-1999/wemeet-socket-contracts";
 import ChatList from "./common/chat-list";
 import UserList from "./common/user-list";
 

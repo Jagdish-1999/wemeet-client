@@ -1,5 +1,8 @@
 import { TypedSocket } from "@/events/constants";
-import { ClientToServerEventMap, User } from "@jagdish-1999/socket-contracts";
+import {
+    ClientToServerEventMap,
+    User,
+} from "@jagdish-1999/wemeet-socket-contracts";
 import { io } from "socket.io-client";
 
 // Full monkey patch version — logs ALL emitted events automatically

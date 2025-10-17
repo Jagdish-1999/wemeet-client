@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Chat as ChatFromServer, User } from "@jagdish-1999/socket-contracts";
+import {
+    Chat as ChatFromServer,
+    User,
+} from "@jagdish-1999/wemeet-socket-contracts";
 
 import useSocket from "@/hooks/use-socket";
 import Chat from "./chat";

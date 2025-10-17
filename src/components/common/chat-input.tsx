@@ -7,7 +7,7 @@ import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import useSocket from "@/hooks/use-socket";
 import { KeyboardEvent, SetStateAction, useCallback } from "react";
-import { Chat, User } from "@jagdish-1999/socket-contracts";
+import { Chat, User } from "@jagdish-1999/wemeet-socket-contracts";
 
 interface ChatInputPropTypes {
     activeUser: User | null;

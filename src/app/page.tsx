@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Toast from "@/lib/toast";
-import { User } from "@jagdish-1999/socket-contracts";
+import { User } from "@jagdish-1999/wemeet-socket-contracts";
 
 import Navbar from "@/components/common/nav-bar";
 import { useIsMobile } from "@/hooks/use-mobile";

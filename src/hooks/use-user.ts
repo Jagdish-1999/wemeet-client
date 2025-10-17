@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Toast from "@/lib/toast";
 import { decryptData, encryptData } from "@/lib/crypto";
-import { User } from "@jagdish-1999/socket-contracts";
+import { User } from "@jagdish-1999/wemeet-socket-contracts";
 
 const useUser = (): User | null => {
     const [user, setUser] = useState<User | null>(null);
